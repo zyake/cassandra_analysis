@@ -1,0 +1,27 @@
+@startuml
+title SelectStatement - local SinglePartition
+
+
+QueryProcessor --> SelectStatement : execute
+loop
+    SelectStatement --> SinglePartitionPager : fetchPage
+    SinglePartitionPager --> SinglePartitionReadCommand : execute
+    SinglePartitionReadCommand --> StorageProxy : read
+    StorageProxy --> AbstractReadExecutor : executeAsync
+    StorageProxy --> AbstractReadExecutor : awaitResponses
+    SelectStatement <-- SinglePartitionPager : PartitionIterator
+    loop
+        SelectStatement --> PartitionIterator : next
+        SelectStatement --> SelectStatement : processPartition
+        loop RowIterator.hasNext
+            SelectStatement --> RowIterator : partitionKey
+            SelectStatement --> RowIterator : columns
+            SelectStatement --> ResultSetBuilder : add
+        end
+    end
+end
+
+QueryProcessor <-- SelectStatement : ResultMessage
+
+
+@enduml
