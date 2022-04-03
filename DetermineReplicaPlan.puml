@@ -1,0 +1,35 @@
+@startuml
+title Determine ReplicaPlan
+
+--> AbstractReadExecutor : getReadExecutor
+AbstractReadExecutor --> ReplicaPlans : forRead
+ReplicaPlans --> Keyspace : getReplicationStrategy
+ReplicaPlans --> ReplicaLayout : forTokenReadLiveSorted
+ReplicaLayout --> AbstractReplicationStrategy : getNaturalReplicasForToken
+AbstractReplicationStrategy --> AbstractReplicationStrategy : getNaturalReplicas
+
+ReplicaPlans --> ReplicaLayout : natural
+AbstractReplicationStrategy --> RingPosition : getToken
+AbstractReplicationStrategy --> TokenMetadata : getRingVersion
+AbstractReplicationStrategy --> TokenMetadata : sortedTokens, tokenToEndpointMap to list
+AbstractReplicationStrategy --> TokenMetadata : firstToken
+AbstractReplicationStrategy --> ReplicaLayout : getCachedReplicas
+note left
+ AbstractReplicationStrategy --> managing token to replicas(host) map filtered by the strategy
+ TokenMetadata --> simple token to hosts map
+end note
+alt if cache does not exist
+    AbstractReplicationStrategy --> TokenMetadata : cachedOnlyTokenMap
+    AbstractReplicationStrategy --> TokenMetadata : firstToken from cachedOnlyTokenMap
+    AbstractReplicationStrategy --> ReplicaLayout : calculateNaturalReplicas by strategy
+    AbstractReplicationStrategy --> AbstractReplicationStrategy : put token to replicas map with version using the strategy
+end
+
+ReplicaPlans --> ReplicaPlans : candidatesForRead, find out appropriate liveNaturalReplicas
+ReplicaPlans --> ReplicaPlans : contactForRead, extract the required number of contacts(EndpointsForToken) from candidates
+ReplicaPlans --> ReplicaPlans : assureSufficientLiveReplicasForRead
+ReplicaPlans --> ReplicaPlan.ForTokenRead : new
+AbstractReadExecutor <-- ReplicaPlans
+<-- AbstractReadExecutor
+
+@enduml
