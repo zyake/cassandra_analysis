@@ -192,5 +192,51 @@
                             Processing response from /127.0.0.1:8000 [RequestResponseStage-3] | 2022-04-07 22:51:18.631000 | 127.0.0.1 |          25333 | 127.0.0.1
                                                                                 Request complete | 2022-04-07 22:51:18.632437 | 127.0.0.1 |          26437 | 127.0.0.1
 
+## Drop node
 
+    zyake@DESKTOP-P3FQ6DK:~/apache-cassandra-4.0.3-1/bin$ ./nodetool removenode 373bdbea-ec2b-4647-aedb-6e31adda7732
+    zyake@DESKTOP-P3FQ6DK:~/apache-cassandra-4.0.3-1/bin$ ./nodetool -pp status
+    Datacenter: datacenter1
+    =======================
+    Status=Up/Down
+    |/ State=Normal/Leaving/Joining/Moving
+    --  Address         Load        Tokens  Owns (effective)  Host ID                               Rack
+    UN  127.0.0.1:7000  248.36 KiB  16      100.0%            9147128a-dd9e-4909-966d-f849e6ce2206  rack1
 
+    zyake@DESKTOP-P3FQ6DK:~/apache-cassandra-4.0.3-1/bin$ ./nodetool -pp ring
+
+    Datacenter: datacenter1
+    ==========
+    Address         Rack        Status State   Load            Owns                Token
+                                                                                8045501285120120772
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -8782219492892387546
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -7804074040376273470
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -6025439739552686341
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -4929397839317748052
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -3838100728625535792
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -2993724081134374036
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -1553455851231790796
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             -481955234891757984
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             535896169850669031
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             1353568102463019825
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             2429323983688599364
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             3165239676399493005
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             4244612483847094663
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             5488132489527686635
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             6455496732606222134
+    127.0.0.1:7000  rack1       Up     Normal  248.36 KiB      100.00%             8045501285120120772
+
+    Warning: "nodetool ring" is used to output all the tokens of a node.
+    To view status related info of a node use "nodetool status" instead.
+
+    cqlsh> use tutorialspoint ;
+    cqlsh:tutorialspoint> SELECT * FROM test;
+
+    id | name
+    ----+------
+    10 | test
+    1 | test
+    8 | test
+    2 | test
+    6 | test
+    3 | test
