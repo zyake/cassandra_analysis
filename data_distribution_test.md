@@ -89,6 +89,24 @@
 
 => 16 virtual nodes per physical node
 
+### cassandra.yaml default configuration
+
+    # This defines the number of tokens randomly assigned to this node on the ring
+    # The more tokens, relative to other nodes, the larger the proportion of data
+    # that this node will store. You probably want all nodes to have the same number
+    # of tokens assuming they have equal hardware capability.
+    #
+    # If you leave this unspecified, Cassandra will use the default of 1 token for legacy compatibility,
+    # and will use the initial_token as described below.
+    #
+    # Specifying initial_token will override this setting on the node's initial start,
+    # on subsequent starts, this setting will apply even if initial token is set.
+    #
+    # See https://cassandra.apache.org/doc/latest/getting_started/production.html#tokens for
+    # best practice information about num_tokens.
+    #
+    num_tokens: 16
+
 ## Get endpoints for tokens
 
     zyake@DESKTOP-P3FQ6DK:~/apache-cassandra-4.0.3-2/bin$ ./nodetool -pp getendpoints tutorialspoint test 1
