@@ -2,7 +2,7 @@
 
 ## Topology Comparision
 
-### Multi Leader(Quorum Model)
+### Quorum Model(Multi Leader)
 
 ![multi leader](images/multi-leader.png)
 
