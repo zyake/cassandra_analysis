@@ -2,11 +2,11 @@
 
 ## Comparison Matrix
 
-||   | Quorum(Cassandra)  | CAS(Cassandra) | Single Leader(DynamoDB)  |
+||   | Quorum(Cassandra)  | CAS(Cassandra) | Single Leader(DynamoDB, Cloud Spanner, YugabyteDB etc...)  |
 |---|---|---|---|---|
 |Linearizability| Linearizability Support | No(with failure and/or Concurrent Write) | - | Yes(Write after Strong Consistent Read) |
 |Read| Stronger Single Node Read Consistency | No(Dirty Read)  |-| - | Yes(may not be up to date, but no Dirty Read) |
-|| Strong Consistent Read Support | No(Read Quorum cannot ensure Strong Consistent Read even with foreground Read Repair) | - | Yes(Single Leader ensures Strong Consistent Read) |
+|| Strong Consistent Read Support | No(Read Quorum cannot ensure Strong Consistent Read even with foreground blocking Read Repair) | - | Yes(Single Leader ensures Strong Consistent Read) |
 || Read Effeciency | No(must read from multiple nodes) |  - | Yes(No Read Quorum) |
 |Write| Strong Write Consistency | No(may incur Dirty Data) |  Yes | Yes |
 || Write Effeciency | Yes(Single RT per node, but no Strong Consistency Support) | No(4 round trip due to design(one RT) and implementation(another one RT)) | Yes(minimum 2 round trip) |
