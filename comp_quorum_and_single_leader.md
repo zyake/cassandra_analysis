@@ -1,5 +1,15 @@
 # Comparison Between Quorum Model and Single Leader Model in Multi Writer KVS
 
+## Topology Comparision
+
+### Multi Leader(Quorum Model)
+
+![multi leader](images/multi-leader.png)
+
+### Single Leader
+
+![single leader](images/single-leader.png)
+
 ## Comparison Matrix
 
 ||   | Quorum(Cassandra)  | CAS(Cassandra) | Single Leader(DynamoDB, Cloud Spanner, YugabyteDB etc...)  |
