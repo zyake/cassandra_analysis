@@ -1,4 +1,4 @@
-# Comparison Between Quorum Model and Single Leader Model
+# Comparison Between Quorum Model and Single Leader Model in Multi Writer KVS
 
 ## Comparison Matrix
 
@@ -15,6 +15,7 @@
 ## References
 
 https://blog.yugabyte.com/apache-cassandra-lightweight-transactions-secondary-indexes-tunable-consistency/
+https://docs.yugabyte.com/preview/comparisons/
 https://cassandra.apache.org/doc/latest/cassandra/operating/read_repair.html
 
 >The data returned even after a read repair has been performed may not be the most up-to-date data if consistency level is other than one requiring response from all replicas.
