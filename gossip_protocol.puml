@@ -1,0 +1,35 @@
+@startuml
+title Gossip Protocol
+
+activate GosipperTask
+
+group gossip loop(every second)
+GosipperTask --> GosipperTask : sort endpoint map randomly
+GosipperTask --> GosipperTask : create a GossipDigestSyn message
+GosipperTask --> MessagingService : send GossipDigestSyn to a live endpoint
+GosipperTask --> MessagingService : send GossipDigestSyn to an unreachable endpoint
+GosipperTask --> MessagingService : send GossipDigestSyn to a seed node
+end
+
+activate GossipDigestSynVerbHandler 
+--> GossipDigestSynVerbHandler : doVerb
+GossipDigestSynVerbHandler --> GossipDigestSynVerbHandler : calculate delta gossip digests
+GossipDigestSynVerbHandler --> GossipDigestSynVerbHandler : create a GossipDigestAck message
+GossipDigestSynVerbHandler --> MessagingService : respond GossipDigestAck to the peer
+deactivate GossipDigestSynVerbHandler
+
+activate GossipDigestAckVerbHandler 
+--> GossipDigestAckVerbHandler : doVerb
+GossipDigestAckVerbHandler --> GossipDigestAckVerbHandler : update timestamp and notify EndpointState to FailureDetector
+GossipDigestAckVerbHandler --> GossipDigestAckVerbHandler : apply EndpointState if necessary
+GossipDigestAckVerbHandler --> GossipDigestAckVerbHandler : calculate delta gossip digests
+GossipDigestAckVerbHandler --> GossipDigestAckVerbHandler : create a GossipDigestAck2 message
+GossipDigestAckVerbHandler --> MessagingService : respond GossipDigestAck2 to the peer
+deactivate GossipDigestAckVerbHandler
+
+activate GossipDigestAck2VerbHandler
+--> GossipDigestAck2VerbHandler : doVerb
+GossipDigestAck2VerbHandler --> GossipDigestAck2VerbHandler : update timestamp and notify EndpointState to FailureDetector
+GossipDigestAck2VerbHandler --> GossipDigestAck2VerbHandler : apply EndpointState if necessary
+deactivate GossipDigestAck2VerbHandler
+
