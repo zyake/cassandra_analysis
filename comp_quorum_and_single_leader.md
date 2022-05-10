@@ -1,12 +1,12 @@
-# Comparison Between Quorum Model and Single Leader Model in Multi Writer KVS
+# Comparison Between Leaderless/Quorum Model and Single Leader Model in Multi Writer KVS
 
 ## Topology Comparision
 
-### Quorum Model(Multi Leader)
+### Leaderless/Quorum Model - Cassandra
 
-![multi leader](images/multi-leader.png)
+![leaderless](images/multi-leader.png)
 
-### Single Leader
+### Single Leader - DynamoDB, Spanner, YugabyteDB etc...
 
 ![single leader](images/single-leader.png)
 
@@ -15,7 +15,7 @@
 ||   | Quorum(Cassandra)  | CAS(Cassandra) | Single Leader(DynamoDB, Cloud Spanner, YugabyteDB etc...)  |
 |---|---|---|---|---|
 |Linearizability| Linearizability Support | No(with failure and/or Concurrent Write) | - | Yes(Write after Strong Consistent Read) |
-|Read| Stronger Single Node Read Consistency | No(Dirty Read)  |-| - | Yes(may not be up to date, but no Dirty Read) |
+|Read| Stronger Single Node Read Consistency | No(Dirty Read may occurr)  |-| Yes(data may not be up to date, but no Dirty Read) |
 || Strong Consistent Read Support | No(Read Quorum cannot ensure Strong Consistent Read even with foreground blocking Read Repair) | - | Yes(Single Leader ensures Strong Consistent Read) |
 || Read Effeciency | No(must read from multiple nodes) |  - | Yes(No Read Quorum) |
 |Write| Strong Write Consistency | No(may incur Dirty Data) |  Yes | Yes |
